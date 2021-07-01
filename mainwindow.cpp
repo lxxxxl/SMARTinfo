@@ -19,14 +19,17 @@ MainWindow::MainWindow(QWidget *parent)
     model = new QStandardItemModel(this);
     ui->tableViewData->setModel(model);
     model->setColumnCount(3);
-    // remove vertical headers
+    // remove table headers
     ui->tableViewData->verticalHeader()->hide();
+    ui->tableViewData->horizontalHeader()->hide();
     // add proper names to horisontal headers
-    model->setHeaderData(0, Qt::Horizontal, "Parameter", Qt::DisplayRole);
-    model->setHeaderData(1, Qt::Horizontal, "Worst", Qt::DisplayRole);
-    model->setHeaderData(2, Qt::Horizontal, "Value", Qt::DisplayRole);
+    //model->setHorizontalHeaderItem(0, new QStandardItem("Parameter"));
+    //model->setHorizontalHeaderItem(1, new QStandardItem("Worst"));
+    //model->setHorizontalHeaderItem(2, new QStandardItem("Value"));
+    // resize table columns to occupy all space
+    ui->tableViewData->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    // conect signals
+    // connect signals
     connect(ui->comboBoxDriveSelect, SIGNAL(currentIndexChanged(int)), this, SLOT(currentIndexChanged(int)));
 
     // basic UI setup
@@ -118,10 +121,6 @@ void MainWindow::parseSmartctlOutput_Drive(QString data)
                                 QString::number(nvme.value(key).toInt())
                                 );
     }
-
-    // resize QTableView columns to clearly diaplay data
-    ui->tableViewData->resizeColumnsToContents();
-
 }
 
 void MainWindow::currentIndexChanged(int index)
